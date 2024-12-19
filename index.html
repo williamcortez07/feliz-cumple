@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        /* Estilo general */
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* Contenedor de las letras */
+        #birthday {
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap; /* Permite que las letras se ajusten en pantallas pequeñas */
+            justify-content: center; /* Centra el texto horizontalmente */
+            text-align: center;
+        }
+
+        /* Letras individuales */
+        .letter {
+            opacity: 0;
+            transition: opacity 0.5s;
+            animation: rise 1s forwards;
+            display: inline-block;
+            background: linear-gradient(to right, #800080, #FFD700, #00BFFF, #00FF00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; /* Hace que el texto sea transparente para mostrar el degradado */
+        }
+
+        /* Animación de subida */
+        @keyframes rise {
+            from {
+                transform: translateY(100px);
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Globos */
+        .balloon {
+            position: absolute;
+            bottom: 0;
+            border-radius: 50%;
+            animation: float 3s forwards;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-500px);
+                opacity: 0;
+            }
+        }
+
+        /* Media queries para responsividad */
+        @media (max-width: 2000px) {
+            #birthday {
+                font-size: 4em; /* Reducir el tamaño del texto en tablets */
+            }
+        }
+
+        @media (max-width: 768px) {
+            #birthday {
+                font-size: 3em; /* Reducir el tamaño del texto en pantallas medianas */
+            }
+        }
+
+        @media (max-width: 480px) {
+            #birthday {
+                font-size: 2em; /* Reducir el tamaño del texto en móviles */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="birthday"></div>
+
+    <script>
+        const colors = ["#800080", "#FFD700", "#00BFFF", "#00FF00"];
+        const message = "Happy Birthday to you"; // Mensaje de cumpleaños
+
+        const birthdayDiv = document.getElementById("birthday");
+
+        // Crear letras y añadirlas al contenedor
+        message.split("").forEach((letter, index) => {
+            const span = document.createElement("span");
+            span.className = "letter";
+            span.innerText = letter === " " ? "\u00A0" : letter; // Mantener los espacios
+            birthdayDiv.appendChild(span);
+
+            // Animar cada letra con un retraso
+            setTimeout(() => {
+                span.style.opacity = 1;
+                span.style.animationDelay = `${index * 0.5}s`;
+            }, index * 500);
+        });
+
+        // Crear globos animados
+        function createBalloons() {
+            for (let i = 0; i < 20; i++) {
+                const balloon = document.createElement("div");
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                balloon.className = "balloon";
+                balloon.style.backgroundColor = color;
+                balloon.style.width = `${Math.random() * 30 + 20}px`; // Tamaño entre 20 y 50px
+                balloon.style.height = `${Math.random() * 50 + 30}px`; // Tamaño entre 30 y 80px
+                balloon.style.left = `${Math.random() * 100}vw`;
+                balloon.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(balloon);
+            }
+        }
+
+        // Crear globos después de que las letras terminen de aparecer
+        setTimeout(createBalloons, message.length * 500 + 1000);
+    </script>
+</body>
+</html>
